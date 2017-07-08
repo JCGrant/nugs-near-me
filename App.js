@@ -52,6 +52,7 @@ export default class App extends React.Component {
           <MapView.Marker
             key={i}
             coordinate={marker.coordinate}
+            image={require('./assets/nugget.png')}
           />
         ))}
       </MapView>
