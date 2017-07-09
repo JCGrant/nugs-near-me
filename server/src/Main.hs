@@ -8,45 +8,46 @@ import Data.Aeson (FromJSON, ToJSON)
 import Data.Monoid ((<>))
 import GHC.Generics (Generic)
 
-
-data User = User { userId :: Int, userName :: String }
+data Coordinate = Coordinate { latitude :: Float, longitude :: Float }
   deriving (Show, Generic)
 
-instance ToJSON User
-instance FromJSON User
+instance ToJSON Coordinate
+instance FromJSON Coordinate
 
-bob :: User
-bob = User { userId = 1, userName = "bob" }
+newtype Shop = Shop { coordinate :: Coordinate }
+  deriving (Show, Generic)
 
-jenny :: User
-jenny = User { userId = 2, userName = "jenny" }
+instance ToJSON Shop
+instance FromJSON Shop
 
-allUsers :: [User]
-allUsers = [bob, jenny]
+allShops :: [Shop]
+allShops =
+  [ Shop { 
+    coordinate =
+      Coordinate { latitude = 51.500, longitude = -0.172}
+  }
+  , Shop {
+    coordinate =
+      Coordinate { latitude = 51.500, longitude = -0.177}
+  }
+  , Shop {
+    coordinate =
+      Coordinate { latitude = 51.505, longitude = -0.172}
+  }
+  , Shop {
+    coordinate =
+      Coordinate { latitude = 51.505, longitude = -0.177}
+  }
+  ]
 
 
-hello :: ActionM ()
-hello = do
-  name <- param "name"
-  text ("hello " <> name <> "!")
-
-users :: ActionM ()
-users = do
-  json allUsers
-
-matchesId :: Int -> User -> Bool
-matchesId id user = userId user == id
-
-user :: ActionM ()
-user = do
-  id <- param "id"
-  json (filter (matchesId id) allUsers)
+shops :: ActionM ()
+shops = do
+  json allShops
 
 routes :: ScottyM ()
 routes = do
-  get "/hello/:name" hello
-  get "/users" users
-  get "/user/:id" user
+  get "/shops" shops
 
 main :: IO ()
 main = do
