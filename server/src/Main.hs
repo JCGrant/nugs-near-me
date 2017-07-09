@@ -2,14 +2,17 @@
 module Main where
 
 import Web.Scotty
+import Data.Text.Internal.Lazy (Text)
+import Data.Monoid ((<>))
 
 hello :: ActionM ()
 hello = do
-  text "hello world!"
+  name <- param "name"
+  text ("hello " <> name <> "!")
 
 routes :: ScottyM ()
 routes = do
-  get "/hello" hello
+  get "/hello/:name" hello
 
 main :: IO ()
 main = do
