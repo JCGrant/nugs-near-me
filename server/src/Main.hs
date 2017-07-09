@@ -34,10 +34,19 @@ users :: ActionM ()
 users = do
   json allUsers
 
+matchesId :: Int -> User -> Bool
+matchesId id user = userId user == id
+
+user :: ActionM ()
+user = do
+  id <- param "id"
+  json (filter (matchesId id) allUsers)
+
 routes :: ScottyM ()
 routes = do
   get "/hello/:name" hello
   get "/users" users
+  get "/user/:id" user
 
 main :: IO ()
 main = do
