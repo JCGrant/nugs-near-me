@@ -1,40 +1,17 @@
 import React from 'react';
 import { MapView } from 'expo';
 
-const MARKERS = [
-  {
-    coordinate: {
-      latitude: 51.500,
-      longitude: -0.172,
-    }
-  },
-  {
-    coordinate: {
-      latitude: 51.500,
-      longitude: -0.177,
-    }
-  },
-  {
-    coordinate: {
-      latitude: 51.505,
-      longitude: -0.172,
-    }
-  },
-  {
-    coordinate: {
-      latitude: 51.505,
-      longitude: -0.177,
-    }
-  },
-];
-
 export default class App extends React.Component {
   constructor() {
     super();
 
     this.state = {
-      markers: MARKERS,
+      shops: [],
     };
+
+    fetch('http://192.168.1.114:3000/shops')
+      .then((response) => response.json())
+      .then((shops) => this.setState({ shops }))
   }
 
   render() {
@@ -48,10 +25,10 @@ export default class App extends React.Component {
           longitudeDelta: 0.0421,
         }}
       >
-        {this.state.markers.map((marker, i) => (
+        {this.state.shops.map((shop, i) => (
           <MapView.Marker
             key={i}
-            coordinate={marker.coordinate}
+            coordinate={shop.coordinate}
             image={require('./assets/nugget.png')}
           />
         ))}
