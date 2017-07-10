@@ -1,6 +1,8 @@
 import React from 'react';
 import { MapView } from 'expo';
 
+console.ignoredYellowBox = ['Warning: View.propTypes'];
+
 export default class App extends React.Component {
   constructor() {
     super();
