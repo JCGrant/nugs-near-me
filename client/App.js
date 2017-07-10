@@ -8,11 +8,17 @@ export default class App extends React.Component {
     this.state = {
       shops: [],
     };
-
-    fetch('http://192.168.1.114:3000/shops')
-      .then((response) => response.json())
-      .then((shops) => this.setState({ shops }))
   }
+
+  componentWillMount() {
+    this._getShopsAsync();
+  }
+
+  _getShopsAsync = async () => {
+    const response = await fetch('http://192.168.1.114:3000/shops');
+    const shops = await response.json();
+    this.setState({ shops });
+  };
 
   render() {
     return (
